@@ -7,10 +7,11 @@ import org.apache.flink.api.common.JobExecutionResult;
 import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
+import org.apache.flink.configuration.Configuration;
 import org.junit.Rule;
 import org.junit.Test;
 
-public class AppTest
+public class DataSetTest
 {
   @Rule
   public final DirTestWatcher dirTestWatcher = new DirTestWatcher.Builder()
@@ -22,7 +23,9 @@ public class AppTest
   {
     final String filePath = ResourceUtils.getResourceAsFile(Paths.get("test.txt")).getAbsolutePath();
 
-    ExecutionEnvironment env = ExecutionEnvironment.createLocalEnvironment(1);
+    ExecutionEnvironment env = ExecutionEnvironment.createLocalEnvironmentWithWebUI(new Configuration());
+    env.setParallelism(1);
+
     DataSet<String> data = env.readTextFile(filePath);
 
     data
